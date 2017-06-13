@@ -21,17 +21,20 @@ public class ClassTransformer implements IClassTransformer, Opcodes {
     private final ListMultimap<String, MethodTransformer> methodTransformers = ArrayListMultimap.create();
 
     public ClassTransformer() {
+        // chunks packet exception spam fix (hypixel)
         methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "([BIZ)V", ChunkPatch::patchFillChunk));
 
+        // optifine cape memory leak fix
         fieldTransformers.put("CapeUtils$1", new FieldTransformer("val$thePlayer", f -> f.desc = "Ljava/lang/String;"));
         methodTransformers.put("CapeUtils$1", new MethodTransformer("<init>", "(Lbet;Ljy;)V", CapeUtils1Patch::patchConstructor));
         methodTransformers.put("CapeUtils$1", new MethodTransformer("a", "()V", CapeUtils1Patch::patchSkinAvailable));
-
         methodTransformers.put("io.prplz.steev.OptifineAdapter", new MethodTransformer("setLocationOfCape", "(Lnet/minecraft/client/entity/AbstractClientPlayer;Lnet/minecraft/util/ResourceLocation;)V", OptifineAdapterPatch::patchSetLocationOfCape));
 
+        // limit fps while mc is unfocused
         methodTransformers.put("net.minecraft.client.Minecraft", new MethodTransformer("k", "()Z", MinecraftPatch::patchIsFramerateLimitBelowMax));
         methodTransformers.put("net.minecraft.client.Minecraft", new MethodTransformer("j", "()I", MinecraftPatch::patchGetLimitFramerate));
 
+        // make armor red while taking damage, as in 1.7
         methodTransformers.put("net.minecraft.client.renderer.entity.layers.LayerArmorBase", new MethodTransformer("b", "()Z", LayerArmorBasePatch::patchShouldCombineTextures));
     }
 
