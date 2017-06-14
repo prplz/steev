@@ -7,6 +7,7 @@ import io.prplz.steev.patch.ChunkPatch;
 import io.prplz.steev.patch.LayerArmorBasePatch;
 import io.prplz.steev.patch.MinecraftPatch;
 import io.prplz.steev.patch.OptifineAdapterPatch;
+import io.prplz.steev.patch.WorldPatch;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -35,6 +36,15 @@ public class ClassTransformer implements IClassTransformer {
 
         // make armor red while taking damage, as in 1.7
         methodTransformers.put("net.minecraft.client.renderer.entity.layers.LayerArmorBase", new MethodTransformer("b", "()Z", LayerArmorBasePatch::patchShouldCombineTextures));
+
+        // fullbright + no light updates
+        methodTransformers.put("net.minecraft.world.World", new MethodTransformer("c", "(Lads;Lcj;)Z", WorldPatch::patchCheckLightFor));
+        methodTransformers.put("net.minecraft.world.World", new MethodTransformer("k", "(Lcj;)I", WorldPatch::patchGetLight)); // getLight
+        methodTransformers.put("net.minecraft.world.World", new MethodTransformer("c", "(Lcj;Z)I", WorldPatch::patchGetLight)); // getLight
+        methodTransformers.put("net.minecraft.world.World", new MethodTransformer("b", "(Lads;Lcj;)I", WorldPatch::patchGetLight)); // getLightFor
+        methodTransformers.put("net.minecraft.world.World", new MethodTransformer("a", "(Lads;Lcj;)I", WorldPatch::patchGetLight)); // getLightFromNeighborsFor
+        methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "(Lads;Lcj;)I", WorldPatch::patchGetLight)); // getLightFor
+        methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "(Lcj;I)I", WorldPatch::patchGetLight)); // getLightSubtracted
     }
 
 
