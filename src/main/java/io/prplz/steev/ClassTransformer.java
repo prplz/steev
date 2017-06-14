@@ -10,12 +10,11 @@ import io.prplz.steev.patch.OptifineAdapterPatch;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class ClassTransformer implements IClassTransformer, Opcodes {
+public class ClassTransformer implements IClassTransformer {
 
     private final ListMultimap<String, FieldTransformer> fieldTransformers = ArrayListMultimap.create();
     private final ListMultimap<String, MethodTransformer> methodTransformers = ArrayListMultimap.create();
