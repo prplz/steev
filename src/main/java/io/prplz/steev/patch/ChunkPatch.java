@@ -13,7 +13,7 @@ public class ChunkPatch {
 
     public static void patchFillChunk(MethodNode method) {
         /*
-        if (ChunkHook.fillChunkHook(this, data, mask, full)) {
+        if (!ChunkHook.fillChunkHook(this, data, mask, full)) {
             return;
         }
         */
