@@ -36,6 +36,7 @@ public class ClassTransformer implements IClassTransformer {
 
         // make armor red while taking damage, as in 1.7
         methodTransformers.put("net.minecraft.client.renderer.entity.layers.LayerArmorBase", new MethodTransformer("b", "()Z", LayerArmorBasePatch::patchShouldCombineTextures));
+        methodTransformers.put("net.minecraft.client.renderer.entity.layers.LayerArmorBase", new MethodTransformer("a", "(Lpr;Lbbo;FFFFFFF)V", LayerArmorBasePatch::patchRenderGlint));
 
         // fullbright + no light updates
         methodTransformers.put("net.minecraft.world.World", new MethodTransformer("c", "(Lads;Lcj;)Z", WorldPatch::patchCheckLightFor));
