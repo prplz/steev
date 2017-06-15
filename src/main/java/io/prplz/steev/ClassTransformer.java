@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import io.prplz.steev.patch.CapeUtils1Patch;
 import io.prplz.steev.patch.ChunkPatch;
+import io.prplz.steev.patch.GuiIngameForgePatch;
 import io.prplz.steev.patch.LayerArmorBasePatch;
 import io.prplz.steev.patch.MinecraftPatch;
 import io.prplz.steev.patch.OptifineAdapterPatch;
@@ -46,6 +47,9 @@ public class ClassTransformer implements IClassTransformer {
         methodTransformers.put("net.minecraft.world.World", new MethodTransformer("a", "(Lads;Lcj;)I", WorldPatch::patchGetLight)); // getLightFromNeighborsFor
         methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "(Lads;Lcj;)I", WorldPatch::patchGetLight)); // getLightFor
         methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "(Lcj;I)I", WorldPatch::patchGetLight)); // getLightSubtracted
+
+        // flashing hearts fix
+        methodTransformers.put("net.minecraftforge.client.GuiIngameForge", new MethodTransformer("renderHealth", "(II)V", GuiIngameForgePatch::patchRenderHealth));
     }
 
 
