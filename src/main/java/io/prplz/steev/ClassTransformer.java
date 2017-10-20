@@ -2,12 +2,10 @@ package io.prplz.steev;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import io.prplz.steev.patch.CapeUtils1Patch;
 import io.prplz.steev.patch.ChunkPatch;
 import io.prplz.steev.patch.GuiIngameForgePatch;
 import io.prplz.steev.patch.LayerArmorBasePatch;
 import io.prplz.steev.patch.MinecraftPatch;
-import io.prplz.steev.patch.OptifineAdapterPatch;
 import io.prplz.steev.patch.WorldPatch;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
@@ -24,12 +22,6 @@ public class ClassTransformer implements IClassTransformer {
     public ClassTransformer() {
         // chunks packet exception spam fix (hypixel)
         methodTransformers.put("net.minecraft.world.chunk.Chunk", new MethodTransformer("a", "([BIZ)V", ChunkPatch::patchFillChunk));
-
-        // optifine cape memory leak fix
-        fieldTransformers.put("CapeUtils$1", new FieldTransformer("val$thePlayer", f -> f.desc = "Ljava/lang/String;"));
-        methodTransformers.put("CapeUtils$1", new MethodTransformer("<init>", "(Lbet;Ljy;)V", CapeUtils1Patch::patchConstructor));
-        methodTransformers.put("CapeUtils$1", new MethodTransformer("a", "()V", CapeUtils1Patch::patchSkinAvailable));
-        methodTransformers.put("io.prplz.steev.OptifineAdapter", new MethodTransformer("setLocationOfCape", "(Lnet/minecraft/client/entity/AbstractClientPlayer;Lnet/minecraft/util/ResourceLocation;)V", OptifineAdapterPatch::patchSetLocationOfCape));
 
         // limit fps while mc is unfocused
         methodTransformers.put("net.minecraft.client.Minecraft", new MethodTransformer("k", "()Z", MinecraftPatch::patchIsFramerateLimitBelowMax));
