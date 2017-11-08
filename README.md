@@ -1,5 +1,5 @@
 # steev
-This mod does these things : 
+This mod does the following: 
 - Fixes chunks packet exception spam bug (on Hypixel Network)
 - Limit fps while Minecraft is unfocused     
 - Make armor red while taking damage, as in 1.7 (Compatible with oldanimationsmod)
